@@ -57,11 +57,12 @@ let convertProgram (request: ConvertProgramRequest): ConvertProgramResponse =
             // Emit each resource as a separate component in a separate directory   
             for resource in resources do
                 let targetComponentDirectory = Path.Combine(request.TargetDirectory, resource.name)
+                ignore (Directory.CreateDirectory(targetComponentDirectory))
                 let targetPulumiFile = Path.Combine(targetComponentDirectory, "main.pp")
                 File.WriteAllText(targetPulumiFile, Printer.printProgram {
                     nodes = [ PulumiTypes.PulumiNode.Resource resource ]
                 })
- 
+
             // create a main.pp file that imports all the components
             let entryPulumiProgram = Printer.printProgram {
                 nodes = [
