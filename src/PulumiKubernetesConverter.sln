@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "PulumiKubernetesConverter", "PulumiKubernetesConverter\PulumiKubernetesConverter.fsproj", "{876FD8D0-F4CE-4618-B80F-E1452549EF85}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Build", "..\Build.fsproj", "{7B592E2F-CF8C-4B59-836B-1AADE94994AB}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Tests", "Tests\Tests.fsproj", "{11927383-F826-4802-A63E-F3256A44BAB4}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Converter", "Converter\Converter.fsproj", "{C9DB9CAF-A04C-4205-9E94-77472B031089}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "LocalTester", "LocalTester\LocalTester.fsproj", "{96899EED-0FC1-420B-BA2B-A90AF67C7321}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{876FD8D0-F4CE-4618-B80F-E1452549EF85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{876FD8D0-F4CE-4618-B80F-E1452549EF85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{876FD8D0-F4CE-4618-B80F-E1452549EF85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{876FD8D0-F4CE-4618-B80F-E1452549EF85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B592E2F-CF8C-4B59-836B-1AADE94994AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B592E2F-CF8C-4B59-836B-1AADE94994AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B592E2F-CF8C-4B59-836B-1AADE94994AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B592E2F-CF8C-4B59-836B-1AADE94994AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11927383-F826-4802-A63E-F3256A44BAB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11927383-F826-4802-A63E-F3256A44BAB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11927383-F826-4802-A63E-F3256A44BAB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11927383-F826-4802-A63E-F3256A44BAB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9DB9CAF-A04C-4205-9E94-77472B031089}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9DB9CAF-A04C-4205-9E94-77472B031089}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9DB9CAF-A04C-4205-9E94-77472B031089}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9DB9CAF-A04C-4205-9E94-77472B031089}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96899EED-0FC1-420B-BA2B-A90AF67C7321}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96899EED-0FC1-420B-BA2B-A90AF67C7321}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96899EED-0FC1-420B-BA2B-A90AF67C7321}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96899EED-0FC1-420B-BA2B-A90AF67C7321}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+	EndGlobalSection
+EndGlobal

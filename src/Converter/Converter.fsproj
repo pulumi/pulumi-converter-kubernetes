@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="YamlDocument.fs" />
+        <Compile Include="PulumiTypes.fs" />
+        <Compile Include="Printer.fs" />
+        <Compile Include="Transform.fs" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Azure.Bicep.Core" Version="0.19.5" />
+        <PackageReference Include="Azure.Bicep.Types.Az" Version="0.2.552" />
+        <PackageReference Include="Foundatio" Version="10.6.1" />
+        <PackageReference Include="FsToolkit.ErrorHandling" Version="4.13.0" />
+        <PackageReference Include="Humanizer" Version="2.14.1" />
+        <PackageReference Include="Microsoft.PowerPlatform.ResourceStack" Version="6.0.0.1457" />
+        <PackageReference Update="FSharp.Core" Version="7.0.300" />
+        <PackageReference Include="YamlDotNet" Version="13.7.1" />
+    </ItemGroup>
+</Project>

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: "2020-08-04T18:50:43Z"
+  generation: 1
+  name: argocd-server
+  namespace: default
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2020-08-04T18:51:31Z"
+    lastUpdateTime: "2020-08-04T18:51:31Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2020-08-04T18:50:43Z"
+    lastUpdateTime: "2020-08-04T18:51:31Z"
+    message: ReplicaSet "argocd-server-7778cdd5" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 1
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1

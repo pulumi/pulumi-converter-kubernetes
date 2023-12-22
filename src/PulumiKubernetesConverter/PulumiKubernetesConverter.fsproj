@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net7.0</TargetFramework>
+        <Version>0.1.0</Version>
+        <AssemblyName>pulumi-converter-k8s</AssemblyName>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="Program.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Converter\Converter.fsproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Pulumi" Version="3.57.0" />
+    </ItemGroup>
+
+</Project>

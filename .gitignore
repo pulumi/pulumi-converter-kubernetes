@@ -1,0 +1,8 @@
+bin
+obj
+.idea
+.DS_Store
+node_modules
+integration_tests/storageAccount/typescript/package-lock.json
+/artifacts
+package-lock.json

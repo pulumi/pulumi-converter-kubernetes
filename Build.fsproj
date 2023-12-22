@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="build\Program.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CliWrap" Version="3.5.0" />
+    <PackageReference Include="Fake.Core.Environment" Version="5.23.1" />
+    <PackageReference Include="Fake.Core.Target" Version="5.23.1" />
+    <PackageReference Include="Fastenshtein" Version="1.0.0.8" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="Octokit" Version="7.0.1" />
+    <PackageReference Include="PulumiSchema" Version="1.2.0" />
+    <PackageReference Include="SharpZipLib" Version="1.4.2" />
+  </ItemGroup>
+
+</Project>
