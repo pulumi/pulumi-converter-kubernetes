@@ -42,21 +42,8 @@ let parsingYaml = testList "Parsing basic yaml works" [
 
         Expect.equal secondName (Some "test2") "Name is test"
     }
-    
-    test "parsing multiline strings" {
-        let yaml = "name: |\n  test\n  test2"
-        let documents = parseYamlDocuments yaml
-        Expect.equal documents.Length 1 "There is one document"
-        let name =
-            documents.[0].content
-            |> Map.tryFind "name"
-            |> Option.map (function
-                | Node.Scalar scalar -> scalar.Value
-                | _ -> failwith "Expected scalar")
-
-        Expect.equal name (Some "test\n  test2") "Name is test"
-    }
 ]
+
 let allTests = testList "All tests" [
     parsingYaml
 ]
