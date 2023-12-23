@@ -12,8 +12,19 @@ type Node =
     | Mapping of Map<string, Node>
     | None
 
+/// Document describes a single YAML document within a YAML file that is a mapping
+/// For example "name: foo" is a document with a single entry "name" that is mapped to a scalar "foo"
+/// A YAML file can contain multiple documents, for example the following
+///
+/// 
+/// name: foo
+/// ---
+/// name: bar
 type Document = { content: Map<string, Node> }
 
+/// KubeDocument describes a single Kubernetes resource from a YAML document
+/// It has a valid non-empty apiVersion, kind, name, optional namespace and a content that is a mapping
+/// A YAML file can have multiple KubeDocuments each of which describes a Kubernetes resource
 type KubeDocument = {
     content: Map<string, Node>
     apiVersion: string

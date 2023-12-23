@@ -9,9 +9,12 @@ let rec print (expression: PulumiSyntax) (indentSize: int) (builder: StringBuild
     let indent() = append(String.replicate indentSize " ")
     let indentBy(size: int) = append(String.replicate size " ")
     match expression with
-    | PulumiSyntax.String value -> append(sprintf $"\"{value}\"")
+    | PulumiSyntax.String value ->
+        let withoutInterpolatedParts = value.Replace("${", "$${")
+        append($"\"{withoutInterpolatedParts}\"")
     | PulumiSyntax.MultilineString value ->
-        append $"<<EOF\n{value}\nEOF"
+        let withoutInterpolatedParts = value.Replace("${", "$${")
+        append $"<<EOF\n{withoutInterpolatedParts}\nEOF"
     | PulumiSyntax.InterpolatedString (expressions, values) ->
         let mutable expressionIndex = 0
         let printExpr() =

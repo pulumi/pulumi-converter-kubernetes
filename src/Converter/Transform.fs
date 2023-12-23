@@ -34,8 +34,7 @@ let resourceName (document: KubeDocument) (usedNames: Dictionary<string, int>) =
 let fromYamlScalar (node: YamlScalarNode) =
     if node.Style = ScalarStyle.DoubleQuoted || node.Style = ScalarStyle.SingleQuoted then
         if node.Value.Contains "\"" then
-            let cleaned = (unquote node.Value).Replace("${", "$${")
-            PulumiSyntax.MultilineString cleaned
+            PulumiSyntax.MultilineString (unquote node.Value)
         else
             PulumiSyntax.String (unquote node.Value)
     else
@@ -47,7 +46,7 @@ let fromYamlScalar (node: YamlScalarNode) =
              | true, value -> PulumiSyntax.Number value
              | _ ->
                  if node.Value.Contains "\n" || node.Value.Contains "\"" then
-                     PulumiSyntax.MultilineString (node.Value.Replace("${", "$${"))
+                     PulumiSyntax.MultilineString node.Value
                  else
                      PulumiSyntax.String node.Value
 

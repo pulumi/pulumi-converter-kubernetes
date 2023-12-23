@@ -5,14 +5,10 @@ open System.Threading.Tasks
 open System.Xml
 open Fake.IO
 open Fake.Core
-open CliWrap
-open CliWrap.Buffered
 open System.Text
-open Fastenshtein
 open Octokit
 open ICSharpCode.SharpZipLib.Tar
 open ICSharpCode.SharpZipLib.GZip
-open PulumiSchema.Types
 
 /// Recursively tries to find the parent of a file starting from a directory
 let rec findParent (directory: string) (fileToFind: string) =
@@ -22,58 +18,8 @@ let rec findParent (directory: string) (fileToFind: string) =
     then path
     else findParent (DirectoryInfo(path).Parent.FullName) fileToFind
 
-let repositoryRoot = findParent __SOURCE_DIRECTORY__ "README.md";
-
-let pulumiCliBinary() : Task<string> = task {
-    try
-        // try to get the version of pulumi installed on the system
-        let! version =
-            Cli.Wrap("pulumi")
-                .WithArguments("version")
-                .WithValidation(CommandResultValidation.ZeroExitCode)
-                .ExecuteAsync()
-
-        return "pulumi"
-    with
-    | _ ->
-        // when pulumi is not installed, try to get the version of of the dev build
-        // installed on the system using `make install` in the pulumi repo
-        let homeDir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
-        let pulumiPath = System.IO.Path.Combine(homeDir, ".pulumi-dev", "bin", "pulumi")
-        if System.IO.File.Exists pulumiPath then
-            return pulumiPath
-        elif System.IO.File.Exists $"{pulumiPath}.exe" then
-            return $"{pulumiPath}.exe"
-        else
-            return "pulumi"
-}
-
-let schemaFromPulumi(pluginName: string) = task {
-    let packageName = $"{pluginName}@2.0.0"
-    let! binary = pulumiCliBinary()
-    let! output =
-         Cli.Wrap(binary)
-            .WithArguments($"package get-schema {packageName}")
-            .WithValidation(CommandResultValidation.None)
-            .ExecuteBufferedAsync()
-
-    if output.ExitCode <> 0 then
-        return Error output.StandardError
-    else
-        return Ok output.StandardOutput
-}
-
-let parseSchemaFromPulumi(pluginName: string) =
-    task {
-        let! schema = schemaFromPulumi(pluginName)
-        return
-            match schema with
-            | Ok schema -> Ok (PulumiSchema.Parser.parseSchema schema)
-            | Error error -> Error error
-    }
-    |> Async.AwaitTask
-    |> Async.RunSynchronously
-
+let repositoryRoot = findParent __SOURCE_DIRECTORY__ "README.md"
+let project = "PulumiKubernetesConverter"
 
 let runTests() =
     if Shell.Exec("dotnet", "run", Path.Combine(repositoryRoot, "src", "Tests")) <> 0
@@ -88,7 +34,7 @@ let buildSolution() =
     then failwithf "Build failed"
 
 let converterVersion() =
-    let projectFilePath = Path.Combine(repositoryRoot, "src", "PulumiKubernetesConverter", "PulumiKubernetesConverter.fsproj")
+    let projectFilePath = Path.Combine(repositoryRoot, "src", project, $"{project}.fsproj")
     let content = File.ReadAllText projectFilePath
     let doc = XmlDocument()
     use content = new MemoryStream(Encoding.UTF8.GetBytes content)
@@ -109,7 +55,7 @@ let createTarGz (source: string) (target: string)  =
 
 let createArtifacts() =
     let version = converterVersion()
-    let cwd = Path.Combine(repositoryRoot, "src", "PulumiKubernetesConverter")
+    let cwd = Path.Combine(repositoryRoot, "src", project)
     let runtimes = [
         "linux-x64"
         "linux-arm64"
@@ -172,7 +118,7 @@ let releaseVersion (release: Release) =
 
 let createAndPublishArtifacts() =
     let version = converterVersion()
-    let github = new GitHubClient(ProductHeaderValue "PulumiKubernetesConverter")
+    let github = GitHubClient(ProductHeaderValue project)
     let githubToken = Environment.GetEnvironmentVariable "GITHUB_TOKEN"
     // only assign github token to the client when it is available (usually in Github CI)
     if not (isNull githubToken) then
@@ -185,7 +131,7 @@ let createAndPublishArtifacts() =
     let githubRepo = "pulumi-converter-k8s"
     let releases = await (github.Repository.Release.GetAll(githubUsername, githubRepo))
     let alreadyReleased = releases |> Seq.exists (fun release -> releaseVersion release = version)
-        
+
     if alreadyReleased then
         printfn $"Release v{version} already exists, skipping publish"
     else
