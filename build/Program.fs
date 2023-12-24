@@ -153,7 +153,13 @@ let main(args: string[]) : int =
     | [| "tests" |] ->
         runTests()
 
-    | [| "integration-tests" |] ->
+    | [| "unit"; "tests" |] ->
+        runTests()
+
+    | [| ("integration-tests"|"integration_tests") |] ->
+        integrationTests()
+
+    | [| "integration"; "tests" |] ->
         integrationTests()
 
     | [| "build" |] ->
@@ -164,7 +170,7 @@ let main(args: string[]) : int =
 
     | [| "publish" |] ->
         createAndPublishArtifacts()
-        
+
     | [| "create-artifacts" |] ->
         createArtifacts()
 

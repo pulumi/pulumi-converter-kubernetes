@@ -21,10 +21,10 @@ jobs:
     - name: Build Solution
       run: dotnet run build
     - name: Run Unit Tests
-      run: dotnet run tests
+      run: dotnet run unit tests
     - name: Install Pulumi CLI
       run: brew install pulumi
     - name: Run Integration Tests
-      run: dotnet run integration-tests
+      run: dotnet run integration tests
     - name: Publish
       run: dotnet run publish

@@ -34,10 +34,10 @@ dotnet run build
 
 ### Run unit tests
 ```bash
-dotnet run tests
+dotnet run unit tests
 ```
 
 ### Run integration tests
 ```bash
-dotnet run integration-tests
+dotnet run integration tests
 ```

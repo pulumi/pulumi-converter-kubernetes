@@ -1,5 +1,5 @@
 {
-	"name": "pulumi",
+	"name": "pulumi_pcl",
 	"devDependencies": {
 		"@types/node": "^14"
 	},

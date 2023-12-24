@@ -6,44 +6,57 @@ open System.Threading.Tasks
 open CliWrap
 open CliWrap.Buffered
 open System.Linq
-open Foundatio.Storage
 
 let pulumiCliBinary() : Task<string> = task {
     try
         // try to get the version of pulumi installed on the system
-        let! version =
+        let! pulumiVersionResult =
             Cli.Wrap("pulumi")
                 .WithArguments("version")
-                .WithValidation(CommandResultValidation.ZeroExitCode)
-                .ExecuteAsync()
+                .WithValidation(CommandResultValidation.None)
+                .ExecuteBufferedAsync()
 
-        return "pulumi"
+        let version = pulumiVersionResult.StandardOutput.Trim()
+        let versionRegex = Text.RegularExpressions.Regex("v[0-9]+\\.[0-9]+\\.[0-9]+")
+        if versionRegex.IsMatch version then
+            return "pulumi"
+        else
+            return! failwith "Pulumi not installed"
     with
-    | _ ->
+    | error ->
         // when pulumi is not installed, try to get the version of of the dev build
         // installed on the system using `make install` in the pulumi repo
         let homeDir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)
-        let pulumiPath = System.IO.Path.Combine(homeDir, ".pulumi-dev", "bin", "pulumi")
-        if System.IO.File.Exists pulumiPath then
+        let pulumiPath = Path.Combine(homeDir, ".pulumi-dev", "bin", "pulumi")
+        if File.Exists pulumiPath then
             return pulumiPath
-        elif System.IO.File.Exists $"{pulumiPath}.exe" then
+        elif File.Exists $"{pulumiPath}.exe" then
             return $"{pulumiPath}.exe"
         else
             return "pulumi"
 }
 
-let convertTypescript(directory: string, target: string) = task {
+let convert(workingDirectory: string, targetDirectory: string, targetLanguage: string) = task {
     let! pulumi = pulumiCliBinary()
     let! output =
-        Cli.Wrap(pulumi).WithArguments($"convert --from pcl --language typescript --out {target}")
-           .WithWorkingDirectory(directory)
+        Cli.Wrap(pulumi).WithArguments($"convert --from pcl --language {targetLanguage} --out {targetDirectory}")
+           .WithWorkingDirectory(workingDirectory)
            .WithValidation(CommandResultValidation.None)
            .ExecuteBufferedAsync()
-    
+
     if output.ExitCode = 0 then
         return Ok output.StandardOutput
     else
-        return Error output.StandardError
+        let! secondAttemptGenerateOnly =
+            Cli.Wrap(pulumi).WithArguments($"convert --from pcl --language {targetLanguage} --out {targetDirectory} --generate-only")
+               .WithWorkingDirectory(workingDirectory)
+               .WithValidation(CommandResultValidation.None)
+               .ExecuteBufferedAsync()
+        
+        if secondAttemptGenerateOnly.ExitCode = 0 then
+            return Ok secondAttemptGenerateOnly.StandardOutput
+        else
+            return Error secondAttemptGenerateOnly.StandardError
 }
 
 let rec findParent (directory: string) (fileToFind: string) =
@@ -66,7 +79,7 @@ let main (args: string[]) =
             if not (File.Exists kubernetesFilePath) then
                 printfn $"Couldn't find file at {kubernetesFilePath}"
             else
-                let pulumiTargetDirectory = Path.Combine(example, "pulumi")
+                let pulumiTargetDirectory = Path.Combine(example, "pulumi_pcl")
                 if not (Directory.Exists pulumiTargetDirectory) then
                     Directory.CreateDirectory pulumiTargetDirectory |> ignore
                 let inputYamlContent = File.ReadAllText(kubernetesFilePath)
@@ -94,23 +107,25 @@ let main (args: string[]) =
                         let output = Printer.printProgram pulumiProgram
                         File.WriteAllText(outputFile, output)
                         Ok ()
-                
+
                 match compilationResult with
                 | Error error ->
                     printfn $"Failed to compile file at {kubernetesFilePath}: %s{error}"
                 | Ok () ->
                     printfn $"Converted YAML into Pulumi at {pulumiTargetDirectory}"
-                    let conversion =
-                        convertTypescript (pulumiTargetDirectory, Path.Combine(example,"typescript"))
-                        |> Async.AwaitTask
-                        |> Async.RunSynchronously
+                    let targetLanguages = ["typescript"; "csharp"]
+                    for targetLanguage in targetLanguages do
+                        let targetDirectory = Path.Combine(example, targetLanguage)
+                        let conversion =
+                            convert (pulumiTargetDirectory, targetDirectory, targetLanguage)
+                            |> Async.AwaitTask
+                            |> Async.RunSynchronously
 
-                    match conversion with
-                    | Error errorMessage ->
-                        failwithf $"Failed to convert Pulumi program to TypeScript: {errorMessage}"
-
-                    | Ok _ ->
-                        printfn $"Successfully converted {kubernetesFilePath} to TypeScript"
+                        match conversion with
+                        | Error errorMessage ->
+                            failwithf $"Failed to convert Pulumi program to {targetLanguage}: {errorMessage}"
+                        | Ok _ ->
+                            printfn $"Successfully converted {kubernetesFilePath} to {targetLanguage}"
         0
     with
     | ex ->
