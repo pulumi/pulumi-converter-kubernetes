@@ -2,7 +2,6 @@ import * as pulumi from "@pulumi/pulumi";
 import * as kubernetes from "@pulumi/kubernetes";
 
 const coredns = new kubernetes.core.v1.ConfigMap("coredns", {
-    apiVersion: "v1",
     data: {
         Corefile: `.:53 {
     errors
@@ -24,7 +23,6 @@ const coredns = new kubernetes.core.v1.ConfigMap("coredns", {
 }STUBDOMAINS
 `,
     },
-    kind: "ConfigMap",
     metadata: {
         name: "coredns",
         namespace: "kube-system",

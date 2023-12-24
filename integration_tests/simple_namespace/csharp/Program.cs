@@ -7,8 +7,6 @@ return await Deployment.RunAsync(() =>
 {
     var kafka = new Kubernetes.Core.V1.Namespace("kafka", new()
     {
-        ApiVersion = "v1",
-        Kind = "Namespace",
         Metadata = new Kubernetes.Types.Inputs.Meta.V1.ObjectMetaArgs
         {
             Labels = 

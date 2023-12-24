@@ -1,6 +1,4 @@
 resource myNginxSvc "kubernetes:core/v1:Service" {
-    apiVersion = "v1"
-    kind = "Service"
     metadata = {
         "labels" = {
             "app" = "nginx"
@@ -21,8 +19,6 @@ resource myNginxSvc "kubernetes:core/v1:Service" {
     }
 }
 resource myNginx "kubernetes:apps/v1:Deployment" {
-    apiVersion = "apps/v1"
-    kind = "Deployment"
     metadata = {
         "labels" = {
             "app" = "nginx"

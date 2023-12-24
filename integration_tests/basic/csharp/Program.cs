@@ -7,8 +7,6 @@ return await Deployment.RunAsync(() =>
 {
     var myNginxSvc = new Kubernetes.Core.V1.Service("myNginxSvc", new()
     {
-        ApiVersion = "v1",
-        Kind = "Service",
         Metadata = new Kubernetes.Types.Inputs.Meta.V1.ObjectMetaArgs
         {
             Labels = 

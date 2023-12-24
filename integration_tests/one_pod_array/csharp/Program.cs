@@ -7,8 +7,6 @@ return await Deployment.RunAsync(() =>
 {
     var bar = new Kubernetes.Core.V1.Pod("bar", new()
     {
-        ApiVersion = "v1",
-        Kind = "Pod",
         Metadata = new Kubernetes.Types.Inputs.Meta.V1.ObjectMetaArgs
         {
             Name = "bar",

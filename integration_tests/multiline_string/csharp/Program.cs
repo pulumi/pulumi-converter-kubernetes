@@ -7,7 +7,6 @@ return await Deployment.RunAsync(() =>
 {
     var coredns = new Kubernetes.Core.V1.ConfigMap("coredns", new()
     {
-        ApiVersion = "v1",
         Data = 
         {
             { "Corefile", @".:53 {
@@ -30,7 +29,6 @@ return await Deployment.RunAsync(() =>
 }STUBDOMAINS
 " },
         },
-        Kind = "ConfigMap",
         Metadata = new Kubernetes.Types.Inputs.Meta.V1.ObjectMetaArgs
         {
             Name = "coredns",

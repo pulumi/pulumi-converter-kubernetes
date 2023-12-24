@@ -1,6 +1,4 @@
 resource cilium "kubernetes:apps/v1:DaemonSet" {
-    apiVersion = "apps/v1"
-    kind = "DaemonSet"
     metadata = {
         "labels" = {
             "app.kubernetes.io/name" = "cilium-agent"

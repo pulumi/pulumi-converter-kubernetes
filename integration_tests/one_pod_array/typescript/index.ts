@@ -2,8 +2,6 @@ import * as pulumi from "@pulumi/pulumi";
 import * as kubernetes from "@pulumi/kubernetes";
 
 const bar = new kubernetes.core.v1.Pod("bar", {
-    apiVersion: "v1",
-    kind: "Pod",
     metadata: {
         name: "bar",
         namespace: "foo",

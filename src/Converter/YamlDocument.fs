@@ -98,7 +98,6 @@ let parseMetadata (content: Map<string, Node>) =
     | Some _ -> Error "metadata field for the resource is not a mapping"
     | None -> Error "metadata field for the resource is not specified and is required"
 
-
 let parseName (metadata: Map<string, Node>) =
     match metadata.TryFind "name" with
     | Some (Node.Scalar scalar) ->
@@ -114,11 +113,14 @@ let parseNamespace (metadata: Map<string, Node>) =
     match metadata.TryFind "namespace" with
     | Some (Node.Scalar scalar) -> Some (unquote scalar.Value)
     | _ -> None
-    
-let removeStatus (content: Map<string, Node>) =
-    match content.TryFind "status" with
-    | Some _ -> content.Remove "status"
-    | None -> content
+
+/// removes redundant top-level fields from the document content.
+/// Specifically "status" field because it is read-only, "apiVersion" and "kind" because they are already parsed.
+let removeRedundantFields (content: Map<string, Node>) =
+    content
+    |> Map.remove "status"
+    |> Map.remove "apiVersion"
+    |> Map.remove "kind"
 
 let kubeDocument (document: Document) = result {
     let! apiVersion = parseApiVersion document.content
@@ -126,10 +128,10 @@ let kubeDocument (document: Document) = result {
     let! metadata = parseMetadata document.content
     let! name = parseName metadata
     return {
-        content = removeStatus document.content
         apiVersion = apiVersion
         kind = kind
         name = name
+        content = removeRedundantFields document.content
         documentNamespace = parseNamespace metadata
     }
 }

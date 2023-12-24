@@ -2,8 +2,6 @@ import * as pulumi from "@pulumi/pulumi";
 import * as kubernetes from "@pulumi/kubernetes";
 
 const myNginxSvc = new kubernetes.core.v1.Service("myNginxSvc", {
-    apiVersion: "v1",
-    kind: "Service",
     metadata: {
         labels: {
             app: "nginx",
@@ -21,8 +19,6 @@ const myNginxSvc = new kubernetes.core.v1.Service("myNginxSvc", {
     },
 });
 const myNginx = new kubernetes.apps.v1.Deployment("myNginx", {
-    apiVersion: "apps/v1",
-    kind: "Deployment",
     metadata: {
         labels: {
             app: "nginx",

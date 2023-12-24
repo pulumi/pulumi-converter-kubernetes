@@ -7,8 +7,6 @@ return await Deployment.RunAsync(() =>
 {
     var cilium = new Kubernetes.Apps.V1.DaemonSet("cilium", new()
     {
-        ApiVersion = "apps/v1",
-        Kind = "DaemonSet",
         Metadata = new Kubernetes.Types.Inputs.Meta.V1.ObjectMetaArgs
         {
             Labels = 

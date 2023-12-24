@@ -1,6 +1,4 @@
 resource bar "kubernetes:core/v1:Pod" {
-    apiVersion = "v1"
-    kind = "Pod"
     metadata = {
         "name" = "bar"
         "namespace" = "foo"

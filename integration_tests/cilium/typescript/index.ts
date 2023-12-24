@@ -2,8 +2,6 @@ import * as pulumi from "@pulumi/pulumi";
 import * as kubernetes from "@pulumi/kubernetes";
 
 const cilium = new kubernetes.apps.v1.DaemonSet("cilium", {
-    apiVersion: "apps/v1",
-    kind: "DaemonSet",
     metadata: {
         labels: {
             "app.kubernetes.io/name": "cilium-agent",

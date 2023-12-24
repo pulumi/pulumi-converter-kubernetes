@@ -1,5 +1,4 @@
 resource coredns "kubernetes:core/v1:ConfigMap" {
-    apiVersion = "v1"
     data = {
         "Corefile" = <<EOF
 .:53 {
@@ -22,7 +21,6 @@ resource coredns "kubernetes:core/v1:ConfigMap" {
 }STUBDOMAINS
 EOF
     }
-    kind = "ConfigMap"
     metadata = {
         "name" = "coredns"
         "namespace" = "kube-system"
