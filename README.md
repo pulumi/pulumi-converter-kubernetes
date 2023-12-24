@@ -1,6 +1,6 @@
 # pulumi-converter-k8s
 
-A Pulumi converter plugin to convert kubernetes manifests to Pulumi languages. Currently work in progress.
+A Pulumi converter plugin to convert kubernetes manifests to Pulumi languages. The idea for this converter is to replace [kube2pulummi](https://github.com/pulumi/kube2pulumi). Currently work in progress.
 
 ### Installation
 Install the plugin from Github releases using the following command
