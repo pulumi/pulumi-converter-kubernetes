@@ -2,6 +2,7 @@ module Converter.YamlDocument
 
 open System
 open System.IO
+open YamlDotNet.Core
 open YamlDotNet.RepresentationModel
 open FsToolkit.ErrorHandling
 
@@ -33,6 +34,11 @@ type KubeDocument = {
     documentNamespace: string option
 }
 
+let isEmptyYamlScalar (scalar: YamlScalarNode) =
+    scalar.Style <> ScalarStyle.DoubleQuoted
+    && scalar.Style <> ScalarStyle.SingleQuoted
+    && String.IsNullOrWhiteSpace scalar.Value
+
 let rec readYamlNode (node: YamlNode) =
     match node with
     | :? YamlScalarNode as scalar -> Node.Scalar scalar
@@ -41,8 +47,18 @@ let rec readYamlNode (node: YamlNode) =
         let pairs =  [
             for pair in mapping.Children do
             match pair.Key with
-            | :? YamlScalarNode as scalar -> scalar.Value, readYamlNode pair.Value
-            | _ -> () ]
+            | :? YamlScalarNode as scalar ->
+                match readYamlNode pair.Value with
+                | Node.Scalar value ->
+                    if not (isEmptyYamlScalar value) then 
+                        scalar.Value, readYamlNode pair.Value
+                    else
+                        ()
+                | anotherNode ->
+                    scalar.Value, anotherNode
+            | _ ->
+                ()
+        ]
 
         pairs
         |> Map.ofList

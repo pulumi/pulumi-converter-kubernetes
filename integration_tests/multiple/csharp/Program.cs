@@ -73,7 +73,7 @@ return await Deployment.RunAsync(() =>
                             {
                                 new Kubernetes.Types.Inputs.Core.V1.ContainerPortArgs
                                 {
-                                    ContainerPort = 80,
+                                    ContainerPortValue = 80,
                                 },
                             },
                         },

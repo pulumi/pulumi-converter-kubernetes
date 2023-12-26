@@ -42,6 +42,17 @@ let parsingYaml = testList "Parsing basic yaml works" [
 
         Expect.equal secondName (Some "test2") "Name is test"
     }
+    
+    test "Parsing yaml works: empty nodes should be removed" {
+        let yaml = "key: hello\nname: "
+        let documents = parseYamlDocuments yaml
+        Expect.equal documents.Length 1 "There is one document"
+        let name =
+            documents.[0].content
+            |> Map.tryFind "name"
+    
+        Expect.equal name None "name key should be removed during parsing"
+    }
 ]
 
 let allTests = testList "All tests" [
