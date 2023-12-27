@@ -1,51 +1,51 @@
 resource myNginxSvc "kubernetes:core/v1:Service" {
     metadata = {
-        "labels" = {
-            "app" = "nginx"
+        labels = {
+            app = "nginx"
         }
-        "name" = "my-nginx-svc"
+        name = "my-nginx-svc"
     }
     spec = {
-        "ports" = [
+        ports = [
             {
-                "port" = 80
+                port = 80
             }
         ]
 
-        "selector" = {
-            "app" = "nginx"
+        selector = {
+            app = "nginx"
         }
-        "type" = "LoadBalancer"
+        type = "LoadBalancer"
     }
 }
 resource myNginx "kubernetes:apps/v1:Deployment" {
     metadata = {
-        "labels" = {
-            "app" = "nginx"
+        labels = {
+            app = "nginx"
         }
-        "name" = "my-nginx"
+        name = "my-nginx"
     }
     spec = {
-        "replicas" = 3
-        "selector" = {
-            "matchLabels" = {
-                "app" = "nginx"
+        replicas = 3
+        selector = {
+            matchLabels = {
+                app = "nginx"
             }
         }
-        "template" = {
-            "metadata" = {
-                "labels" = {
-                    "app" = "nginx"
+        template = {
+            metadata = {
+                labels = {
+                    app = "nginx"
                 }
             }
-            "spec" = {
-                "containers" = [
+            spec = {
+                containers = [
                     {
-                        "image" = "nginx:1.14.2"
-                        "name" = "nginx"
-                        "ports" = [
+                        image = "nginx:1.14.2"
+                        name = "nginx"
+                        ports = [
                             {
-                                "containerPort" = 80
+                                containerPort = 80
                             }
                         ]
 

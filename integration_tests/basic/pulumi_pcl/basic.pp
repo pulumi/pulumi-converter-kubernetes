@@ -1,20 +1,20 @@
 resource myNginxSvc "kubernetes:core/v1:Service" {
     metadata = {
-        "labels" = {
-            "app" = "nginx"
+        labels = {
+            app = "nginx"
         }
-        "name" = "my-nginx-svc"
+        name = "my-nginx-svc"
     }
     spec = {
-        "ports" = [
+        ports = [
             {
-                "port" = 80
+                port = 80
             }
         ]
 
-        "selector" = {
-            "app" = "nginx"
+        selector = {
+            app = "nginx"
         }
-        "type" = "LoadBalancer"
+        type = "LoadBalancer"
     }
 }

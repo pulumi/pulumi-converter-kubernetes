@@ -43,7 +43,7 @@ let parsingYaml = testList "Parsing basic yaml works" [
         Expect.equal secondName (Some "test2") "Name is test"
     }
     
-    test "Parsing yaml works: empty nodes should be removed" {
+    test "Parsing empty nodes should be removed" {
         let yaml = "key: hello\nname: "
         let documents = parseYamlDocuments yaml
         Expect.equal documents.Length 1 "There is one document"
@@ -52,6 +52,28 @@ let parsingYaml = testList "Parsing basic yaml works" [
             |> Map.tryFind "name"
     
         Expect.equal name None "name key should be removed during parsing"
+    }
+    
+    test "Parsing explicitly quoted empty nodes should not be removed" {
+        let yaml = "key: hello\nname: \"\"\nvalue: ''"
+        let documents = parseYamlDocuments yaml
+        Expect.equal documents.Length 1 "There is one document"
+        let name =
+            documents.[0].content
+            |> Map.tryFind "name"
+            |> Option.map (function
+                | Node.Scalar scalar -> scalar.Value
+                | _ -> failwith "Expected scalar for second document")
+
+        let value = 
+            documents.[0].content
+            |> Map.tryFind "value"
+            |> Option.map (function
+                | Node.Scalar scalar -> scalar.Value
+                | _ -> failwith "Expected scalar for second document")
+    
+        Expect.equal name (Some "") "name should still be parsed an empty string"
+        Expect.equal value (Some "") "value should still be parsed an empty string"
     }
 ]
 

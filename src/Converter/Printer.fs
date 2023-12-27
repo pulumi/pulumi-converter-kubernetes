@@ -1,5 +1,6 @@
 module Converter.Printer
 
+open System
 open System.Text
 open Converter.PulumiTypes
 
@@ -60,11 +61,19 @@ let rec print (expression: PulumiSyntax) (indentSize: int) (builder: StringBuild
         append "{\n"
         for (key, value) in Map.toList properties do
             indentBy (indentSize + 4)
-            print key indentSize builder
+            match key with
+            | PulumiSyntax.String keyText ->
+                // No need to quote keys that are valid identifiers
+                if Seq.forall Char.IsLetterOrDigit keyText then
+                    append keyText
+                else
+                    append $"\"{keyText}\""
+            | _ ->
+                print key indentSize builder
             append " = "
             print value (indentSize + 4) builder
             append "\n"
-        
+
         indent()
         append "}"
 

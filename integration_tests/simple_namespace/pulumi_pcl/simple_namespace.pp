@@ -1,8 +1,8 @@
 resource kafka "kubernetes:core/v1:Namespace" {
     metadata = {
-        "labels" = {
-            "name" = "kafka"
+        labels = {
+            name = "kafka"
         }
-        "name" = "kafka"
+        name = "kafka"
     }
 }

@@ -1,6 +1,6 @@
 resource coredns "kubernetes:core/v1:ConfigMap" {
     data = {
-        "Corefile" = <<EOF
+        Corefile = <<EOF
 .:53 {
     errors
     health {
@@ -22,7 +22,7 @@ resource coredns "kubernetes:core/v1:ConfigMap" {
 EOF
     }
     metadata = {
-        "name" = "coredns"
-        "namespace" = "kube-system"
+        name = "coredns"
+        namespace = "kube-system"
     }
 }
