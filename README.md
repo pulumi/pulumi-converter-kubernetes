@@ -5,7 +5,7 @@ A Pulumi converter plugin to convert kubernetes manifests to Pulumi languages. T
 ### Installation
 Install the plugin from Github releases using the following command
 ```
-pulumi plugin install converter k8s --server github://api.github.com/Zaid-Ajaj
+pulumi plugin install converter k8s
 ```
 
 ### Usage
