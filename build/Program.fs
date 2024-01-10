@@ -127,7 +127,7 @@ let createAndPublishArtifacts() =
     else
         printfn "GITHUB_TOKEN is not set"
 
-    let githubUsername = "Zaid-Ajaj"
+    let githubUsername = "pulumi"
     let githubRepo = "pulumi-converter-k8s"
     let releases = await (github.Repository.Release.GetAll(githubUsername, githubRepo))
     let alreadyReleased = releases |> Seq.exists (fun release -> releaseVersion release = version)
