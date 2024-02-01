@@ -2,7 +2,8 @@ name: Publish
 
 on:
   push:
-    branches: [ main ]
+    tags:
+      - v*.*.* # only a valid semver tag
 
 permissions: write-all
 
@@ -11,7 +12,7 @@ env:
 
 jobs:
   publish:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET
@@ -23,7 +24,7 @@ jobs:
     - name: Run Unit Tests
       run: dotnet run unit tests
     - name: Install Pulumi CLI
-      run: brew install pulumi
+      uses: pulumi/actions@v4
     - name: Run Integration Tests
       run: dotnet run integration tests
     - name: Publish
