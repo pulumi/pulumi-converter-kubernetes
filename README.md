@@ -4,10 +4,12 @@ The Pulumi Converter Kubernetes plugin facilitates the conversion of Kubernetes 
 
 This converter supersedes [kube2pulumi](https://github.com/pulumi/kube2pulumi).
 
-### Installation
-To utilize the pulumi-converter-kubernetes plugin for converting Kubernetes YAML to Pulumi and subsequently deploying it, you must first install the Pulumi CLI.
+### Prerequisites
+- [Download & Install Pulumi | Pulumi Docs](https://www.pulumi.com/docs/install/)
 
-Install the plugin from Github releases using the following command:
+### Installation
+
+Install the plugin using the following command:
 
 ```shell
 pulumi plugin install converter kubernetes
