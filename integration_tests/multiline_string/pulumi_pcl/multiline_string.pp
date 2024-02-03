@@ -1,4 +1,4 @@
-resource coredns "kubernetes:core/v1:ConfigMap" {
+resource "coredns" "kubernetes:core/v1:ConfigMap" {
     data = {
         Corefile = <<EOF
 .:53 {

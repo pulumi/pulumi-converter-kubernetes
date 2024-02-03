@@ -149,7 +149,7 @@ let printProgram(program: PulumiProgram) =
             append "}\n"
 
         | PulumiNode.Resource resource ->
-            append $"resource {resource.name} \"{resource.token}\" {{\n"
+            append $"resource \"{resource.name}\" \"{resource.token}\" {{\n"
             match resource.options with
             | None -> ()
             | Some options ->

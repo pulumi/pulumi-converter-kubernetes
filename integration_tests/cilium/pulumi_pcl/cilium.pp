@@ -1,4 +1,4 @@
-resource cilium "kubernetes:apps/v1:DaemonSet" {
+resource "cilium" "kubernetes:apps/v1:DaemonSet" {
     metadata = {
         labels = {
             "app.kubernetes.io/name" = "cilium-agent"

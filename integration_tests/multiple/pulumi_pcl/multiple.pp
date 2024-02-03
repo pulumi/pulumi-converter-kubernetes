@@ -1,4 +1,4 @@
-resource myNginxSvc "kubernetes:core/v1:Service" {
+resource "myNginxSvc" "kubernetes:core/v1:Service" {
     metadata = {
         labels = {
             app = "nginx"
@@ -18,7 +18,7 @@ resource myNginxSvc "kubernetes:core/v1:Service" {
         type = "LoadBalancer"
     }
 }
-resource myNginx "kubernetes:apps/v1:Deployment" {
+resource "myNginx" "kubernetes:apps/v1:Deployment" {
     metadata = {
         labels = {
             app = "nginx"

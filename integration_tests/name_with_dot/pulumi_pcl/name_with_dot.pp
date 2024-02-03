@@ -1,7 +1,7 @@
-resource "bar" "kubernetes:core/v1:Pod" {
+resource "nginx.pod" "kubernetes:core/v1:Pod" {
     metadata = {
-        name = "bar"
-        namespace = "foo"
+        name = "nginx.pod"
+        namespace = "frontend"
     }
     spec = {
         containers = [
