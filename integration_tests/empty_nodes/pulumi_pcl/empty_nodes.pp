@@ -1,4 +1,4 @@
-resource myNginxSvc "kubernetes:core/v1:Service" {
+resource "myNginxSvc" "kubernetes:core/v1:Service" {
     metadata = {
         labels = {
             app = "nginx"

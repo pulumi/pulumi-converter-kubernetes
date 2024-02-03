@@ -1,4 +1,4 @@
-resource kafka "kubernetes:core/v1:Namespace" {
+resource "kafka" "kubernetes:core/v1:Namespace" {
     metadata = {
         labels = {
             name = "kafka"
