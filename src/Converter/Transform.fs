@@ -33,7 +33,7 @@ let resourceName (document: KubeDocument) (usedNames: Dictionary<string, int>) =
 
 let fromYamlScalar (node: YamlScalarNode) =
     if node.Style = ScalarStyle.DoubleQuoted || node.Style = ScalarStyle.SingleQuoted then
-        if node.Value.Contains "\"" then
+        if node.Value.Contains "\"" || node.Value.Contains "\n" then
             PulumiSyntax.MultilineString (unquote node.Value)
         else
             PulumiSyntax.String (unquote node.Value)
