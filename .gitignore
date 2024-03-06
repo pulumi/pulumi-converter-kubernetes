@@ -3,6 +3,7 @@ obj
 .idea
 .DS_Store
 node_modules
-integration_tests/storageAccount/typescript/package-lock.json
 /artifacts
 package-lock.json
+/integration_tests/**/typescript/*.json
+/integration_tests/**/csharp/*.csproj
