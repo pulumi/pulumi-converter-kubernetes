@@ -1,0 +1,18 @@
+# Obtained from: https://github.com/pulumi/pulumi-converter-kubernetes/issues/5
+apiVersion: v1
+data:
+  prometheus.yml: "global:\n  evaluation_interval: 1m\n  external_labels:\n    cluster_id:\
+    \ 'A'\n    port: 9003\n- job_name: kubecost-networking\n  kubernetes_sd_configs:\n\
+    \    - role: pod\n  relabel_configs:\n  # Scrape only the the targets matching\
+    \ the following metadata\n    - source_labels: [__meta_kubernetes_pod_label_app]\n\
+    \      action: keep\n      regex:  kubecost-network-costs\n"
+kind: ConfigMap
+metadata:
+  labels:
+    app: prometheus
+    chart: prometheus-11.0.2
+    component: server
+    heritage: Helm
+    release: kubecost
+  name: kubecost-prometheus-server
+  namespace: kubecost
