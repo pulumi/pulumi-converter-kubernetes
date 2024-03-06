@@ -75,6 +75,40 @@ let parsingYaml = testList "Parsing basic yaml works" [
         Expect.equal name (Some "") "name should still be parsed an empty string"
         Expect.equal value (Some "") "value should still be parsed an empty string"
     }
+
+    test "Parsing multiline strings works" {
+        let yaml = """
+data: "global:\n  evaluation_interval: 1m\n  external_labels:\n    cluster_id:\
+  \ 'A'\n    port: 9003\n- job_name: kubecost-networking\n  kubernetes_sd_configs:\n\
+  \    - role: pod\n  relabel_configs:\n  # Scrape only the the targets matching\
+  \ the following metadata\n    - source_labels: [__meta_kubernetes_pod_label_app]\n\
+  \      action: keep\n      regex:  kubecost-network-costs\n"
+        """
+        let documents = parseYamlDocuments yaml
+        Expect.equal documents.Length 1 "There is one document"
+        let data =
+            documents.[0].content
+            |> Map.tryFind "data"
+            |> Option.map (function
+                | Node.Scalar scalar -> scalar.Value
+                | _ -> failwith "Expected scalar")
+
+        Expect.equal data (Some """global:
+  evaluation_interval: 1m
+  external_labels:
+    cluster_id: 'A'
+    port: 9003
+- job_name: kubecost-networking
+  kubernetes_sd_configs:
+    - role: pod
+  relabel_configs:
+  # Scrape only the the targets matching the following metadata
+    - source_labels: [__meta_kubernetes_pod_label_app]
+      action: keep
+      regex:  kubecost-network-costs
+""")
+         "Multiline string in quotes should be parsed correctly"
+    }
 ]
 
 let allTests = testList "All tests" [
