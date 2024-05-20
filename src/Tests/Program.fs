@@ -5,6 +5,7 @@ open Expecto
 open Converter
 open YamlDocument
 
+[<Tests>]
 let parsingYaml = testList "Parsing basic yaml works" [
     test "Parsing yaml works" {
         let yaml = "name: test"
