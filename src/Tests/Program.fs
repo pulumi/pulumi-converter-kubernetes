@@ -1,5 +1,6 @@
 ﻿open System
 open System.Text
+open System.Collections.Generic
 open Converter.PulumiTypes
 open Expecto
 open Converter
@@ -108,6 +109,41 @@ data: "global:\n  evaluation_interval: 1m\n  external_labels:\n    cluster_id:\
       regex:  kubecost-network-costs
 """)
          "Multiline string in quotes should be parsed correctly"
+    }
+
+    test "Parsing complex keys works" {
+        let yaml = @"
+            kind: Deployment
+            apiVersion: apps/v1
+            metadata:
+              name: repro
+              managedFields:
+                k:{""name"":""controller""}: foo
+        "
+        let names = Dictionary<string, int>()
+        let resources : list<Resource> = [
+            for document in parseYamlDocuments yaml do
+                match kubeDocument document with
+                | Ok kubeDocument ->
+                    let resource = Transform.fromKubeDocument kubeDocument names
+                    resource
+                | Error err -> failwith err
+        ]
+
+        let pulumiProgram : PulumiTypes.PulumiProgram = {
+            nodes = [ for res in resources -> PulumiNode.Resource res ]
+        }
+        let expected = @"resource ""repro"" ""kubernetes:apps/v1:Deployment"" {
+    metadata = {
+        managedFields = {
+            ""k:{\u0022name\u0022:\u0022controller\u0022}"" = ""foo""
+        }
+        name = ""repro""
+    }
+}
+"
+        let output = Printer.printProgram pulumiProgram
+        Expect.equal expected output $"Output was '{output}'"
     }
 ]
 

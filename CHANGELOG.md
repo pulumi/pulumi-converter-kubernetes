@@ -1,5 +1,7 @@
 ## Unreleased
 
+- Escape YAML keys containing double quotes (https://github.com/pulumi/pulumi-converter-kubernetes/pull/15)
+
 ## 0.2.2 (March 12, 2024)
 
 - Update CI build machines to use MacOS to enable signing MacOS binary releases (https://github.com/pulumi/pulumi-converter-kubernetes/pull/12)
