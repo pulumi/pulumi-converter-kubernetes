@@ -7,3 +7,4 @@ node_modules
 package-lock.json
 /integration_tests/**/typescript/*.json
 /integration_tests/**/csharp/*.csproj
+/src/Tests/TestResults/

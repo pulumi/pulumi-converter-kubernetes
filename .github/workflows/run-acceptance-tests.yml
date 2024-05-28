@@ -2,10 +2,10 @@ name: run-acceptance-tests
 
 on:
   push:
-    branches: 
+    branches:
       - main
   pull_request:
-    branches: 
+    branches:
       - main
 
 env:
@@ -15,16 +15,20 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 7.0.x
-    - name: Build Solution
-      run: dotnet run build
-    - name: Run Unit Tests
-      run: dotnet run unit tests
-    - name: Install Pulumi CLI
-      uses: pulumi/actions@v4
-    - name: Run Integration Tests
-      run: dotnet run integration tests
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+      - name: Build Solution
+        run: dotnet run build
+      - name: Run Unit Tests
+        run: dotnet test src/Tests --collect "Code Coverage"
+      - name: Upload coverage
+        uses: codecov/codecov-action@v4
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      - name: Install Pulumi CLI
+        uses: pulumi/actions@v4
+      - name: Run Integration Tests
+        run: dotnet run integration tests
