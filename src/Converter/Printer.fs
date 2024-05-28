@@ -2,6 +2,7 @@ module Converter.Printer
 
 open System
 open System.Text
+open System.Text.Json
 open Converter.PulumiTypes
 
 let rec print (expression: PulumiSyntax) (indentSize: int) (builder: StringBuilder) =
@@ -67,7 +68,8 @@ let rec print (expression: PulumiSyntax) (indentSize: int) (builder: StringBuild
                 if Seq.forall Char.IsLetterOrDigit keyText then
                     append keyText
                 else
-                    append $"\"{keyText}\""
+                    let jsonEncoded = JsonSerializer.Serialize(keyText)
+                    append jsonEncoded
             | _ ->
                 print key indentSize builder
             append " = "
