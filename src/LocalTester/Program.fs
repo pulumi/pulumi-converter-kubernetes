@@ -129,5 +129,5 @@ let main (args: string[]) =
         0
     with
     | ex ->
-        printfn $"Error occured: {ex.Message}"
+        printfn $"Error occurred: {ex.Message}"
         1

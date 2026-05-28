@@ -1,6 +1,7 @@
 ## Unreleased
 
 - Escape YAML keys containing double quotes (https://github.com/pulumi/pulumi-converter-kubernetes/pull/15)
+- Fix typo in LocalTester error message ('occured' -> 'occurred') (https://github.com/pulumi/pulumi-converter-kubernetes/pull/20)
 
 ## 0.2.2 (March 12, 2024)
 
